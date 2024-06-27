@@ -1,0 +1,53 @@
+// DFS
+public static void DFS(ArrayList<ArrayList<Integer>> adj, boolean vis[], ArrayList<Integer> list, int node) {
+    vis[node] = true;
+    list.add(node);
+    for(int neighbor: adj.get(node)){
+        if(!vis[neighbor]){
+          DFS(adj, vis, list, neighbor);
+        }
+    }
+}
+public static ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj)
+{
+    boolean vis[] = new boolean[V];
+    ArrayList<Integer> list = new ArrayList<>();
+    for(int i=0; i<V; i++){
+        if(!vis[i]){
+            DFS(adj, vis, list, 0);
+        }
+    }
+    return list;
+}
+
+    
+// BFS
+public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+    boolean vis[] = new boolean[V];
+    ArrayList<Integer> list = new ArrayList<>();
+    for(int i=0; i<V; i++){
+        if(!vis[i]){
+            BFS(adj, vis, list, 0);
+        }
+    }
+    return list;
+}
+public void BFS(ArrayList<ArrayList<Integer>> adj, boolean vis[], ArrayList<Integer> list, int node){
+    if(vis[node]){
+        return;
+    }
+    Queue<Integer> q = new LinkedList<>();
+    q.offer(node);
+    vis[node] = true;
+    while(!q.isEmpty()){
+        int currNode = q.poll();
+        list.add(currNode);
+        for(int neighbor: adj.get(currNode)){
+            if(!vis[neighbor]) {
+                q.offer(neighbor);
+                vis[neighbor] = true;
+            }
+        }
+    }
+    return;
+}
