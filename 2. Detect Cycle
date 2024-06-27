@@ -1,0 +1,101 @@
+// 1. Undirected Graph, DFS
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean vis[] = new boolean[V];
+        for(int i=0; i<V; i++){
+            if(!vis[i]){
+                if(detect(adj, vis, i, -1)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean detect(ArrayList<ArrayList<Integer>> adj, boolean vis[], int node, int parent){
+        vis[node] = true;
+        for(int neighbor: adj.get(node)){
+            if(vis[neighbor] && neighbor != parent){
+                return true;
+            }
+            if(!vis[neighbor]){
+                vis[neighbor] = true;
+                if(detect(adj, vis, neighbor, node)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+// 2. Undirected Graphs, BFS
+class Solution {
+    static class Pair{
+        int node, parent;
+        public Pair(int n, int p){
+            node = n;
+            parent = p;
+        }
+    }
+    // Function to detect cycle in an undirected graph.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean vis[] = new boolean[V];
+        for(int i=0; i<V; i++){
+            if(!vis[i]){
+                if(detect(adj, vis, i)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean detect(ArrayList<ArrayList<Integer>> adj, boolean vis[], int start){
+        vis[start] = true;
+        Queue<Pair> q = new LinkedList<>();
+        q.offer(new Pair(start, -1));
+        while(!q.isEmpty()){
+            Pair curr = q.poll();
+            for(int neighbor: adj.get(curr.node)){
+                if(vis[neighbor] && neighbor != curr.parent){
+                    return true;
+                }
+                if(!vis[neighbor]){
+                    vis[neighbor] = true;
+                    q.offer(new Pair(neighbor, curr.node));
+                }
+            }
+        }
+        return false;
+    }
+}
+
+
+
+// 3. Directed Graph, DFS
+class Solution {
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean vis[] = new boolean[V];
+        boolean pathVis[] = new boolean[V];
+        for(int i=0; i<V; i++){
+            if(!vis[i] && detect(adj, vis, pathVis, i)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean detect(ArrayList<ArrayList<Integer>> adj, boolean vis[], boolean pathVis[], int node){
+        vis[node] = true;
+        pathVis[node] = true;
+        for(int neighbor: adj.get(node)){
+            if(pathVis[neighbor]){
+                return true;
+            }
+            if(!vis[neighbor] && detect(adj, vis, pathVis, neighbor)){
+                return true;
+            }
+        }
+        pathVis[node] = false; // no need to mark pathVis false if cycle already detected
+        return false;
+    }
+}
