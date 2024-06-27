@@ -99,3 +99,36 @@ class Solution {
         return false;
     }
 }
+
+
+// 4. Directed Graph, Toposort BFS
+class Solution {
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        int indegree[] = new int[V];
+        for(int u=0; u<V; u++){
+            for(int v: adj.get(u)){
+                indegree[v]++;
+            }
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for(int v=0; v<V; v++){
+            if(indegree[v] == 0){
+                q.offer(v);
+            }
+        }
+        
+        int count = 0;
+        while(!q.isEmpty()){
+            int u = q.poll();
+            count++;
+            for(int v: adj.get(u)){
+                indegree[v]--;
+                if(indegree[v] == 0){
+                    q.offer(v);
+                }
+            }
+        }
+        return count != V;
+    }
+}
