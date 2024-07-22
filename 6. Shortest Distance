@@ -1,4 +1,4 @@
-// Single Source Shortest Path
+// Dijkstra: Single Source Shortest Path
 
 class Pair{
     int distance;
