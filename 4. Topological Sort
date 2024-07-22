@@ -1,3 +1,5 @@
+// FOR DAG ONLY.
+
 // DFS
 
 int[] topoSort(int N, ArrayList<ArrayList<Integer>> adj) {
