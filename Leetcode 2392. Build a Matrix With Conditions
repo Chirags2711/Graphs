@@ -1,0 +1,65 @@
+// Neetcode version of DFS, Topo sort
+class Solution {
+    public int[][] buildMatrix(int k, int[][] rowConditions, int[][] colConditions) {
+        List<Integer> rowOrder = topoSort(rowConditions, k);
+        List<Integer> colOrder = topoSort(colConditions, k);
+        int res[][] = new int[k][k];
+        if(rowOrder.size() == 0 || colOrder.size() == 0){
+            return new int[0][];
+        }
+        HashMap<Integer, Integer> rowIndex = new HashMap<>();
+        for(int i=0; i<k; i++){
+            rowIndex.put(rowOrder.get(i), i);
+        }
+        HashMap<Integer, Integer> colIndex = new HashMap<>();
+        for(int i=0; i<k; i++){
+            colIndex.put(colOrder.get(i), i);
+        }
+
+        for(int i=1; i<=k; i++){
+            int row = rowIndex.get(i);
+            int col = colIndex.get(i);
+            res[row][col] = i;
+        }
+        return res;
+    }
+    public List<Integer> topoSort(int[][] edgeList, int V){
+        List<List<Integer>> adjList = new ArrayList<>();
+        for(int i=0; i<=V; i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int edge[]: edgeList){
+            int u = edge[0];
+            int v = edge[1];
+            adjList.get(u).add(v);
+        }
+        List<Integer> order = new ArrayList<>();
+        HashSet<Integer> pathVis = new HashSet<>();
+        HashSet<Integer> vis = new HashSet<>();
+        for(int i=1; i<=V; i++){
+            if(!DFS(adjList, pathVis, vis, i, order)){
+                return new ArrayList<>();
+            }
+        }
+        Collections.reverse(order);
+        return order;
+    }
+    public boolean DFS(List<List<Integer>> adjList, HashSet<Integer> pathVis, HashSet<Integer> vis, int curr, List<Integer> order){
+        if(pathVis.contains(curr)){
+            return false;
+        }
+        if(vis.contains(curr)){
+            return true;
+        }
+        vis.add(curr);
+        pathVis.add(curr);
+        for(int nei: adjList.get(curr)){
+            if(!DFS(adjList, pathVis, vis, nei, order)){
+                return false;
+            }
+        }
+        pathVis.remove(curr);
+        order.add(curr);
+        return true;
+    }
+}
