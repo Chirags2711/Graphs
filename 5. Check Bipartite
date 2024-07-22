@@ -24,3 +24,37 @@ class Solution {
         return true;
     }
 }
+
+// 2. Using BFS
+
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        int color[] = new int[n];
+        for(int i=0; i<n; i++){
+            if(color[i] == 0 && !checkBipartite(i, graph, color)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean checkBipartite(int currNode, int[][] adjList, int color[]){
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(currNode);
+        color[currNode] = 1;
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            int currColor = color[curr];
+            for(int nei: adjList[curr]){
+                if(color[nei] == currColor){
+                    return false;
+                }
+                if(color[nei] == 0){
+                    q.offer(nei);
+                }
+                color[nei] = (currColor == 1? 2 : 1);
+            }
+        }
+        return true;
+    }
+}
