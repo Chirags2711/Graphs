@@ -88,3 +88,7 @@ class Solution{
         }
     }
 }
+
+
+// Can be done using a TreeSet(dist, node).
+// Cannot be done using TreeMap<Dist, Node> as Dist is not unique.
