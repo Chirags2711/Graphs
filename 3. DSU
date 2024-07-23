@@ -42,7 +42,7 @@ class DisjointSetBySize {
         parent = new int[n+1];
         for(int i=0; i<=n; i++){
             parent[i] = i;
-            size[i] = 1;
+            size[i] = 1; // Initial Size = 1
         }
     }
     public int findParent(int node){ //Ultimate parent
@@ -57,10 +57,10 @@ class DisjointSetBySize {
         if(pu == pv) return;
         if(size[pv]>size[pu]){
             parent[pu] = pv; // pu --> pv
-            size[pv] += size[pu];
+            size[pv] += size[pu]; // Increase Size of parent
         }else if(size[pu]>size[pv]){
             parent[pv] = pu; // pv --> pu
-            size[pu] += size[pv];
+            size[pu] += size[pv]; // Increase Size of parent
         }else{ //either, and increase size of chosen parent
             parent[pv] = pu; // here, we did pv --> pu, can do otherwise
             size[pu] += size[pv];
