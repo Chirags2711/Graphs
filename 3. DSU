@@ -30,3 +30,40 @@ class DisjointSetByRank {
         }
     }
 }
+
+
+// DSU By Size
+
+class DisjointSetBySize {
+    int size[];
+    int parent[];
+    DisjointSetBySize(int n){
+        size = new int[n+1];
+        parent = new int[n+1];
+        for(int i=0; i<=n; i++){
+            parent[i] = i;
+        }
+    }
+    public int findParent(int node){ //Ultimate parent
+        if(parent[node] == node){
+            return node;
+        }
+        return parent[node] = findParent(parent[node]); // Path Compression
+    }
+    public void unionBySize(int u, int v){
+        int pu = findParent(u); // Ultimate parent of u
+        int pv = findParent(v); // Ultimate parent of u
+        if(pu == pv) return;
+        if(size[pv]>size[pu]){
+            parent[pu] = pv; // pu --> pv
+            size[pv] += size[pu];
+        }else if(size[pu]>size[pv]){
+            parent[pv] = pu; // pv --> pu
+            size[pu] += size[pv];
+        }else{ //either, and increase size of chosen parent
+            parent[pv] = pu; // here, we did pv --> pu, can do otherwise
+            size[pu] += size[pv];
+            // System.out.println(u+" "+size[u]);
+        }
+    }
+}
