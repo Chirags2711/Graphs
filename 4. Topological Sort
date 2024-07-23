@@ -1,4 +1,5 @@
 // FOR DAG ONLY.
+// If not DAG, size of topo array will be less than V.
 
 // DFS
 
