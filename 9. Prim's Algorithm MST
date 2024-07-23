@@ -1,0 +1,58 @@
+class Tuple {
+    int node;
+    int parent;
+    int weight;
+    public Tuple(int _node, int _parent, int _weight){
+        node   = _node;
+        parent = _parent;
+        weight = _weight;
+    }
+}
+
+class Solution {
+    static int spanningTree(int V, int E, List<List<int[]>> adj) {
+        return MST(V, E, adj);
+    }
+    static int MST(int V, int E, List<List<int[]>> adj){
+        boolean vis[] = new boolean[V];
+        int parent[] = new int[V];
+        Arrays.fill(parent, -1);
+        PriorityQueue<Tuple> pq = new PriorityQueue<>((a, b) -> a.weight - b.weight);
+        // start from anywhere, here starting from 0, parent -1
+        pq.offer(new Tuple(0, -1, 0)); // node, parent, weight, put node 0 in graph
+        int totalWeight = 0;
+        while(!pq.isEmpty()) {
+            Tuple t = pq.poll();
+            int currNode = t.node;
+            if(vis[currNode]) continue;
+            vis[currNode] = true;
+            parent[currNode] = t.parent;
+            totalWeight += t.weight; // minimal connected
+            // now finding which edge to attach to current node to connect other nodes
+            // We would have to choose atleast one because, we do need to attach currNode to graph
+            // we will put all edges, and then we will automatically pop the needed weight edge afterwards
+            // if we put edges of currNode now, pq will only have those edges. 
+            // Afterwards, some will be visited and priority queue will only have those unvisited nodes which connect to our previous currNodes(nodes, not node, whichever are visited till now)
+            // Basically connect connected components to next disconnected node with minimal edge(going Greedy)
+            for(int[] neiList: adj.get(currNode)){
+                int nei = neiList[0];
+                int eW = neiList[1];
+                pq.offer(new Tuple(nei, currNode, eW));
+            }
+        }
+        List<List<Integer>> MSTAdj = new ArrayList<>();
+        for(int i=0; i<V; i++){
+            MSTAdj.add(new ArrayList<>());
+        }
+        for(int i=1; i<V; i++){
+            int u = parent[i];
+            int v = i;
+            List<Integer> list = MSTAdj.get(u);
+            list.add(v);
+        }
+        for(int i=0; i<V; i++){
+            System.out.println(MSTAdj.get(i));
+        }
+        return totalWeight;
+    }
+}
