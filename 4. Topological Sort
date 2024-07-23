@@ -29,7 +29,7 @@ void findTopoSort(int node, boolean vis[], ArrayList<ArrayList<Integer>> adj, St
     st.push(node); 
 }
 
-// BFS 
+// BFS (Kahn's Algorithm)
 int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
 {
     int indegree[] = new int[V];
