@@ -92,3 +92,49 @@ class Solution{
 
 // Can be done using a TreeSet(dist, node).
 // Cannot be done using TreeMap<Dist, Node> as Dist is not unique.
+
+
+// 3. 1631. Path With Minimum Effort
+class Tuple{
+    int x, y, cost;
+    public Tuple(int _x, int _y, int c){
+        x = _x;
+        y = _y;
+        cost = c;
+    }
+}
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        int m = heights.length, n = heights[0].length;
+        PriorityQueue<Tuple> pq = new PriorityQueue<>((a, b) -> a.cost - b.cost);
+        int[][] cost = new int[m][n];
+        for(int[] arr: cost){
+            Arrays.fill(arr, Integer.MAX_VALUE);
+        }
+        cost[0][0] = 0;
+        pq.offer(new Tuple(0, 0, 0));
+        int dirX[] = {0, 0, -1, 1};
+        int dirY[] = {-1, 1, 0, 0};
+        while(!pq.isEmpty()){
+            Tuple t = pq.poll();
+            int currX = t.x;
+            int currY = t.y;
+            int currCost = t.cost;
+            if(currX == m-1 && currY == n-1){
+                return currCost;
+            }
+            for(int i=0; i<4; i++){
+                int nextX = currX + dirX[i];
+                int nextY = currY + dirY[i];
+                if(nextX >= 0 && nextX < m && nextY >= 0 && nextY < n){
+                    int nextCost = Math.max(currCost, Math.abs(heights[nextX][nextY] - heights[currX][currY]));
+                    if(nextCost < cost[nextX][nextY]){
+                        cost[nextX][nextY] = nextCost;
+                        pq.offer(new Tuple(nextX, nextY, nextCost));
+                    }
+                }
+            }
+        }
+        return cost[m-1][n-1];
+    }
+}
