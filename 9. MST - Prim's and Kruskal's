@@ -1,3 +1,6 @@
+// Prim's. Start picking next node to add to connected components. 
+// Can only pick next node among those which can be connected to the component with next edge, and pick one with least edge weight among them
+
 class Tuple {
     int node;
     int parent;
@@ -55,5 +58,85 @@ class Solution {
             System.out.println(MSTAdj.get(i)); // Printing MST
         }
         return totalWeight;
+    }
+}
+
+
+
+// Kruskal. Pick edges in ascending order. If already u and v in one component, then don't pick.
+class Edge{
+    int u, v, eW;
+    public Edge(int _u, int _v, int _eW){
+        u  = _u;
+        v  = _v;
+        eW = _eW;
+    }
+}
+class Solution {
+    static int spanningTree(int V, int E, List<List<int[]>> adj) {
+        DisjointSetBySize ds = new DisjointSetBySize(V);
+        List<Edge> edges = new ArrayList<>();
+        for(int u=0; u<V; u++){
+            List<int[]> list = adj.get(u);
+            for(int[] arr: list){
+                int v = arr[0];
+                int eW = arr[1];
+                edges.add(new Edge(u, v, eW));
+            }
+        }
+        Collections.sort(edges, (a, b) -> a.eW - b.eW);
+        int n = edges.size();
+        int totalWeight = 0;
+        int components = V;
+        for(Edge edge: edges){
+            int u  = edge.u;
+            int v  = edge.v;
+            int eW = edge.eW;
+            if(ds.findUParent(u) == ds.findUParent(v)){
+                continue;
+            }
+            totalWeight += eW;
+            ds.union(u, v);
+            components--;
+            if(components == 1){
+                break;
+            }
+        }
+        return totalWeight;
+    }
+}
+
+class DisjointSetBySize{
+    int parent[];
+    int size[];
+    public DisjointSetBySize(int n){
+        parent = new int[n+1];
+        size = new int[n+1];
+        for(int i=0; i<=n; i++){
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+    
+    public int findUParent(int node){
+        if(parent[node] == node){
+            return node;
+        }
+        return parent[node] = findUParent(parent[node]);
+    }
+    
+    public void union(int u, int v){
+        int pU = findUParent(u);
+        int pV = findUParent(v);
+        if(pU == pV){
+            return;
+        }
+        if(size[pU] > size[pV]){
+            parent[pV] = pU;
+            size[pU] += size[pV];
+        }else{
+            parent[pU] = pV;
+            size[pV] += size[pU];
+        }
     }
 }
