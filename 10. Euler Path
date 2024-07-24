@@ -19,20 +19,20 @@ class Solution {
                     DFS(u, vis, adj);
                     firstNonZeroDegree = false;
                 }else{
-                    return false;
+                    return 0; // None
                 }
             }
         }
         
         
         // Checking for EP or EU or None
-        // int countOdds = 0; // For EP
+        int countOdds = 0;
         for(int i=0; i<V; i++){
-            if(degree[i] % 2 == 1) return false; // For EC
-            // countOdds += degree[i] % 2; // For EP
-            // if(countOdds > 2) return false; // For EP
+            countOdds += degree[i] % 2;
+            if(countOdds > 2) return 0; // None
         }
-        return true;
+        return countOdds == 0 ? 2 : 1; // either 0 odd degrees or 2, 0 means EC, 2 means EP
+        // if only EC check was there, return false on encounter of first odd degree
     }
     
     public void DFS(int curr, boolean[] vis, ArrayList<ArrayList<Integer>> adj){
