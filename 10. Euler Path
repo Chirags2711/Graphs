@@ -1,0 +1,47 @@
+class Solution {
+    public boolean isEularCircuitExist(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Calculating degree
+        int degree[] = new int[V];
+        for(int u=0; u<V; u++){
+            ArrayList<Integer> vList = adj.get(u);
+            for(int v: vList){
+                degree[v]++;
+            }
+        }
+        
+        
+        // Checking non zero degree are connected
+        boolean vis[] = new boolean[V];
+        boolean firstNonZeroDegree = true;
+        for(int u=0; u<V; u++){
+            if(!vis[u] && degree[u] != 0){
+                if(firstNonZeroDegree){
+                    DFS(u, vis, adj);
+                    firstNonZeroDegree = false;
+                }else{
+                    return false;
+                }
+            }
+        }
+        
+        
+        // Checking for EP or EU or None
+        // int countOdds = 0; // For EP
+        for(int i=0; i<V; i++){
+            if(degree[i] % 2 == 1) return false; // For EC
+            // countOdds += degree[i] % 2; // For EP
+            // if(countOdds > 2) return false; // For EP
+        }
+        return true;
+    }
+    
+    public void DFS(int curr, boolean[] vis, ArrayList<ArrayList<Integer>> adj){
+        if(vis[curr]){
+            return;
+        }
+        vis[curr] = true;
+        for(int nei: adj.get(curr)){
+            DFS(nei, vis, adj);
+        }
+    }
+}
