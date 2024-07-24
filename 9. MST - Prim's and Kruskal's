@@ -85,7 +85,6 @@ class Solution {
             }
         }
         Collections.sort(edges, (a, b) -> a.eW - b.eW);
-        int n = edges.size();
         int totalWeight = 0;
         int components = V;
         for(Edge edge: edges){
