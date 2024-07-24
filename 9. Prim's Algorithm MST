@@ -37,7 +37,8 @@ class Solution {
             for(int[] neiList: adj.get(currNode)){
                 int nei = neiList[0];
                 int eW = neiList[1];
-                pq.offer(new Tuple(nei, currNode, eW));
+                if(!vis[nei])
+                    pq.offer(new Tuple(nei, currNode, eW));
             }
         }
         List<List<Integer>> MSTAdj = new ArrayList<>();
