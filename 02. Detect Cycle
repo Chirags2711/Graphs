@@ -85,13 +85,16 @@ class Solution {
         return false;
     }
     public boolean detect(ArrayList<ArrayList<Integer>> adj, boolean vis[], boolean pathVis[], int node){
-        vis[node] = true;
+        if(pathVis[node]){ // visit in same path means cycle
+            return true;
+        }
+        if(vis[node]){ // some other DFS visited it
+            return false;
+        }
         pathVis[node] = true;
+        vis[node]     = true;
         for(int neighbor: adj.get(node)){
-            if(pathVis[neighbor]){
-                return true;
-            }
-            if(!vis[neighbor] && detect(adj, vis, pathVis, neighbor)){
+            if(detect(adj, vis, pathVis, neighbor)){
                 return true;
             }
         }
