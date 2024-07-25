@@ -1,0 +1,55 @@
+class Solution
+{
+    //Function to find number of strongly connected components in the graph.
+    public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        Stack<Integer> topoSort = new Stack<>();
+        boolean vis[] = new boolean[V];
+        for(int i=0; i<V; i++){
+            DFS(i, topoSort, adj, vis);
+        }
+        ArrayList<ArrayList<Integer>> reversedAdj = reverseGraph(adj, V);
+        vis = new boolean[V];
+        int count = 0;
+        while(!topoSort.isEmpty()){
+            int i = topoSort.pop();
+            if(vis[i]) continue;
+            DFSR(i, reversedAdj, vis);
+            count++;
+        }
+        return count;
+    }
+    public void DFS(int curr, Stack<Integer> st, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+        if(vis[curr]){
+            return;
+        }
+        vis[curr] = true;
+        for(int nei: adj.get(curr)){
+            DFS(nei, st, adj, vis);
+        }
+        st.add(curr);
+    }
+    public void DFSR(int curr, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+        if(vis[curr]){
+            return;
+        }
+        vis[curr] = true;
+        for(int nei: adj.get(curr)){
+            DFSR(nei, adj, vis);
+        }
+    }
+    public ArrayList<ArrayList<Integer>> reverseGraph(ArrayList<ArrayList<Integer>> adj, int V){
+        ArrayList<ArrayList<Integer>> rev = new ArrayList<>();
+        for(int i=0; i<V; i++){
+            rev.add(new ArrayList<>());
+        }
+        for(int i=0; i<V; i++){
+            int v = i;
+            ArrayList<Integer> list = adj.get(i);
+            for(int u: list){
+                rev.get(u).add(v);
+            }
+        }
+        return rev;
+    }
+}
