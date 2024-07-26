@@ -1,15 +1,16 @@
 // FOR DAG ONLY.
-// If not DAG, size of topo array will be less than V.
+// Use path Vis to detect cycle in DFS.
+
+// If not DAG, size of topo array will be less than V.(BFS)
 
 // DFS
-
 int[] topoSort(int N, ArrayList<ArrayList<Integer>> adj) {
     Stack<Integer> st = new Stack<Integer>(); 
     boolean vis[] = new boolean[N]; 
     
     for(int i = 0;i<N;i++) {
         if(!vis[i]) {
-            findTopoSort(i, vis, adj, st);
+            topoSortHelper(i, vis, adj, st);
         }
     }
     
@@ -20,11 +21,11 @@ int[] topoSort(int N, ArrayList<ArrayList<Integer>> adj) {
     }
     return topo; 
 }
-void findTopoSort(int node, boolean vis[], ArrayList<ArrayList<Integer>> adj, Stack<Integer> st) {
+void topoSortHelper(int node, boolean vis[], ArrayList<ArrayList<Integer>> adj, Stack<Integer> st) {
     vis[node] = true; 
     for(Integer it: adj.get(node)) {
         if(!vis[it]) {
-            findTopoSort(it, vis, adj, st); 
+            topoSortHelper(it, vis, adj, st); 
         } 
     }
     st.push(node); 
