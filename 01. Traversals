@@ -1,3 +1,7 @@
+// SC: Adj List = 2 * E
+// SC: Adj Matrix = N * N
+
+
 // DFS
 public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
     // Code here
