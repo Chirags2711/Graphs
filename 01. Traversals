@@ -2,7 +2,8 @@
 // SC: Adj Matrix = N * N
 
 
-// DFS
+// DFS. TC: O(N + 2E), SC: O(N)
+// 2E = total degrees for undirected. For Directed, outdegrees = indegrees = E.
 public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
     // Code here
     boolean vis[] = new boolean[V];
@@ -24,7 +25,8 @@ public static void DFS(ArrayList<ArrayList<Integer>> adj, boolean vis[], ArrayLi
 }
 
     
-// BFS
+// BFS, TC: O(N) + O(2E), SC: O(N)
+// 2E = total degrees for undirected. For Directed, outdegrees = indegrees = E.
 public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
     boolean vis[] = new boolean[V];
     ArrayList<Integer> list = new ArrayList<>();
