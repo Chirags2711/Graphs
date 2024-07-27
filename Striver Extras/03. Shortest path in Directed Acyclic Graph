@@ -1,0 +1,53 @@
+// Relaxation in toposort order
+
+class Solution {
+	public int[] shortestPath(int N,int M, int[][] edges) {
+	    ArrayList<ArrayList<int[]>> adj = new ArrayList<>();
+	    for(int i=0; i<N; i++){
+	        adj.add(new ArrayList<>());
+	    }
+	    for(int edge[]: edges){
+	        int u = edge[0];
+	        int v = edge[1];
+	        int eW = edge[2];
+	        adj.get(u).add(new int[]{v, eW});
+	    }
+	    Stack<Integer> st = new Stack<Integer>(); 
+      boolean vis[] = new boolean[N]; 
+      
+      for(int i = 0;i<N;i++) {
+          if(!vis[i]) {
+              topoSortHelper(i, vis, adj, st);
+          }
+      }
+      
+      vis = new boolean[N];
+      int dist[] = new int[N];
+      Arrays.fill(dist, -1);
+      dist[0] = 0;
+      while(!st.isEmpty() && st.peek() != 0){
+          st.pop();
+      }
+      while(!st.isEmpty()){
+          int currNode = st.pop();
+          for(int[] neiList: adj.get(currNode)){
+              int nei = neiList[0];
+              int eW = neiList[1];
+              if(dist[nei] == -1 || dist[currNode] + eW < dist[nei]){
+                  dist[nei] = dist[currNode] + eW;
+              }
+          }
+      }
+      return dist;
+	}
+  void topoSortHelper(int node, boolean vis[], ArrayList<ArrayList<int[]>> adj, Stack<Integer> st) {
+      vis[node] = true; 
+      for(int[] arr: adj.get(node)) {
+          int it = arr[0];
+          if(!vis[it]) {
+              topoSortHelper(it, vis, adj, st); 
+          } 
+      }
+      st.push(node); 
+  }
+}
